@@ -1,8 +1,8 @@
 #include <SDL2/SDL.h>
+#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #define NOT_IMPLEMENTED() \
     fprintf(stderr, "NOT_IMPLEMENTED: %s:%d: %s not implemented\n", __FILE__, __LINE__, __func__)
@@ -13,12 +13,12 @@
         exit(EXIT_FAILURE);                                                           \
     } while (0)
 
-#define SDL_PANIC()                                            \
-    do {                                                          \
+#define SDL_PANIC()                                                                                \
+    do {                                                                                           \
         fprintf(stderr, "SDL_PANIC: %s:%d: In function '%s' we got the following SDL error: %s\n", \
-            __FILE__, __LINE__, __func__, SDL_GetError());             \
-        SDL_Quit();                                               \
-        exit(EXIT_FAILURE);                                       \
+            __FILE__, __LINE__, __func__, SDL_GetError());                                         \
+        SDL_Quit();                                                                                \
+        exit(EXIT_FAILURE);                                                                        \
     } while (0)
 
 #define FRAMERATE_TARGET 60
@@ -70,8 +70,7 @@ int render_rect(const RenderRect rect) {
     return SDL_FillRect(
         g_surface,
         &rect.rect,
-        rect.color
-    );
+        rect.color);
 }
 
 void cleanup() {
@@ -99,31 +98,29 @@ int sdl_init() {
 
     SDL_FillRect(g_surface, NULL, map_rgb(C_BACKGROUND));
 
-    int menu_width = (int)(MENU_WIDTH_PCT * WINDOW_WIDTH);
-    int menu_co_width = WINDOW_WIDTH - menu_width;
-    int menu_height = WINDOW_HEIGHT;
-    RenderRect rect_menu = {
+    const int menu_width = (int)(MENU_WIDTH_PCT * WINDOW_WIDTH);
+    const int menu_co_width = WINDOW_WIDTH - menu_width;
+    const int menu_height = WINDOW_HEIGHT;
+    const RenderRect rect_menu = {
         menu_co_width,
         0,
         menu_width,
         menu_height,
-        map_rgb(GREEN)
-    };
+        map_rgb(GREEN)};
     render_rect(rect_menu);
 
-    int play_width = menu_co_width;
-    int play_height = WINDOW_HEIGHT;
-    RenderRect rect_play = {
+    const int play_width = menu_co_width;
+    const int play_height = WINDOW_HEIGHT;
+    const RenderRect rect_play = {
         0,
         0,
         play_width,
         play_height,
-        map_rgb(RED)
-    };
+        map_rgb(RED)};
     render_rect(rect_play);
 
     SDL_UpdateWindowSurface(g_window);
-
+    return 0;
 }
 
 void sdl_handle_events() {
@@ -139,7 +136,9 @@ void render() {
 }
 
 int main() {
-    if (sdl_init() != 0) { return EXIT_FAILURE; }
+    if (sdl_init() != 0) {
+        return EXIT_FAILURE;
+    }
 
     g_is_running = true;
     while (g_is_running) {
@@ -152,7 +151,7 @@ int main() {
         printf("Finished handling the %zu. frame. It took %.2fms.\n", g_frame_counter, frame_time_ms);
         SDL_Delay(FRAMETIME_TARGET_MS);
 
-        int tick_counter = g_frame_counter / 12;
+        size_t tick_counter = g_frame_counter / 12;
 
         size_t idx_x = tick_counter % 10;
         size_t idx_y = tick_counter / 10;
@@ -172,8 +171,7 @@ int main() {
             idx_y * block_size_y,
             block_size_x,
             block_size_y,
-            map_rgb(BLUE)
-        };
+            map_rgb(BLUE)};
         render_rect(r);
         SDL_UpdateWindowSurface(g_window);
         g_frame_counter += 1;
