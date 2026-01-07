@@ -1,43 +1,27 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-      {
-        "label": "cmake: configure + build (Debug)",
-        "type": "shell",
-        "command": "cmake",
-        "args": [
-          "-S", ".",
-          "-B", "build-debug",
-          "-DCMAKE_BUILD_TYPE=Debug"
-        ],
-        "options": {
-          "cwd": "${workspaceFolder}"
-        },
-        "problemMatcher": [],
-        "group": {
-          "kind": "build",
-          "isDefault": true
-        }
-      },
-      {
-        "label": "cmake: build (Debug)",
-        "type": "shell",
-        "command": "cmake",
-        "args": [
-          "--build", "build-debug", "-j"
-        ],
-        "options": {
-          "cwd": "${workspaceFolder}"
-        },
-        "problemMatcher": []
-      },
-      {
-        "label": "cmake: configure+build (Debug)",
-        "dependsOn": [
-          "cmake: configure + build (Debug)",
-          "cmake: build (Debug)"
-        ],
-        "dependsOrder": "sequence"
-      }
-    ]
-  }
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "cmake: configure (Debug)",
+      "type": "shell",
+      "command": "cmake",
+      "args": ["-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Debug"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": [],
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "cmake: build",
+      "type": "shell",
+      "command": "cmake",
+      "args": ["--build", "build", "-j"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "cmake: configure+build (Debug)",
+      "dependsOn": ["cmake: configure (Debug)", "cmake: build"],
+      "dependsOrder": "sequence"
+    }
+  ]
+}

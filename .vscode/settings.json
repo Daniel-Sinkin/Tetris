@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "${workspaceFolder}"
-}
+    "cmake.sourceDirectory": "${workspaceFolder}",
+    "clangd.arguments": ["--compile-commands-dir=build"]
+  }
